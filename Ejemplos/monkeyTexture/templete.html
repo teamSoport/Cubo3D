@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from "../../three.module.js";
+      import { OrbitControls } from "../../OrbitControls.js";
+
+      let scene, camera, renderer, orbit;
+
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.01,
+        30000
+      );
+      camera.position.set(1, 1, 1);
+
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      //const geometry = new THREE.BoxGeometry(1, 1, 1);
+      //const material = new THREE.MeshBasicMaterial()
+      const geometry = new THREE.BoxGeometry();
+      const materials = [
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load("../monkeyTexture/C1.png"),
+        }),
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load("../monkeyTexture/C1.png"),
+        }),
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load("../monkeyTexture/C2.png"),
+        }),
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load("../monkeyTexture/C2.png"),
+        }),
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load("../monkeyTexture/C3.png"),
+        }),
+        new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load("../monkeyTexture/C3.png"),
+        }),
+      ];
+
+      const cube = new THREE.Mesh(geometry, materials);
+      scene.add(cube);
+
+      orbit = new OrbitControls(camera, renderer.domElement);
+
+      const loader = new THREE.TextureLoader();
+      loader.load("../monkeyTexture/C1.png", (texture) => {
+        materials.map = texture;
+        animate();
+      });
+      function loadColorTexture(path) {
+        const texture = loader.load(path);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        return texture;
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        //cube.rotation.x += 0.001
+        cube.rotation.y += 0.003;
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
+</html>
